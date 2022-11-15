@@ -157,7 +157,7 @@ class GitAuthHelper {
       // by process creation audit events, which are commonly logged. For more information,
       // refer to https://docs.microsoft.com/en-us/windows-server/identity/ad-ds/manage/component-updates/command-line-process-auditing
       const output = await this.git.submoduleForeach(
-        `git config --local '${this.tokenConfigKey}' '${this.tokenPlaceholderConfigValue}' && git config --local --show-origin --name-only --get-regexp remote.origin.url`,
+        `sh -c "git config --local '${this.tokenConfigKey}' '${this.tokenPlaceholderConfigValue}' && git config --local --show-origin --name-only --get-regexp remote.origin.url"`,
         this.settings.nestedSubmodules
       )
 
@@ -365,7 +365,7 @@ class GitAuthHelper {
 
     const pattern = regexpHelper.escape(configKey)
     await this.git.submoduleForeach(
-      `git config --local --name-only --get-regexp '${pattern}' && git config --local --unset-all '${configKey}' || :`,
+      `sh -c "git config --local --name-only --get-regexp '${pattern}' && git config --local --unset-all '${configKey}' || :"`,
       true
     )
   }
